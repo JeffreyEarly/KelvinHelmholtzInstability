@@ -1,0 +1,85 @@
+\documentclass[11pt]{amsart}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Modeling the Kelvin-Helmholtz Instability}
+\author{Jeffrey J. Early}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+\section{Governing Equations}
+
+An incompressible two-dimensional fluid is governed by,
+\begin{align}
+\label{x-mom}
+\frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} + v \frac{\partial u}{\partial y} &= -\frac{1}{\rho_0} \frac{\partial p}{\partial x} + \nu \nabla^2 u\\
+\label{y-mom}
+\frac{\partial v}{\partial t} + u \frac{\partial v}{\partial x} + v \frac{\partial v}{\partial y} &= -\frac{1}{\rho_0} \frac{\partial p}{\partial y} + \nu \nabla^2 v\\
+\label{cont}
+\frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} &= 0.
+\end{align}
+
+If you take the vertical component of the curl of the above equations, i.e., $\frac{\partial}{\partial x} (2) - \frac{\partial}{\partial y} (1)$, you find that
+\begin{equation}
+\label{vorticity}
+\left( \frac{\partial}{\partial t} + u\frac{\partial}{\partial x} + v\frac{\partial}{\partial x} - \nu \nabla^2 \right)\left( \frac{\partial v}{\partial x} - \frac{\partial u}{\partial y} \right) = 0
+\end{equation}
+
+If define a stream function $\psi$ such that
+\begin{equation}
+u = - \frac{\partial \psi}{\partial y}, v = \frac{\partial \psi}{\partial x}
+\end{equation}
+then the incompressibility condition \ref{cont} is automatically satisfied and the governing equation is a function of only $\psi$ and $p$. In addition, however, we can write equation \ref{vorticity} as
+\begin{equation}
+\nabla^2 \psi_t + J \left( \psi, \nabla^2 \psi \right) - \nu \nabla^4 \psi = 0
+\end{equation}
+where $J(a, b) = a_x b_y - a_y b_x$.
+
+More explicitly this is,
+\begin{equation}
+\nabla^2 \psi_t + \psi_x \nabla^2 \psi_y - \psi_y \nabla^2 \psi_x - \nu \nabla^4 \psi = 0
+\end{equation}
+
+\section{Initial Conditions}
+
+We want to set the initial conditions to $v=0$ and,
+\begin{equation}
+u_0(y) = \begin{cases}
+U_0      &  y>a, \\
+\frac{U_0}{a}y      & -a < y < a, \\
+- U_0  & y<-a
+\end{cases}
+\end{equation}
+in a domain periodic in $x$ but bounded by walls at $y=b$ and $y=-b$. Integrating this initial condition to provide an initial condition for the streamfunction $\psi$ we find that,
+\begin{equation}
+\psi_0(y) = \begin{cases}
+U_0 \left( b - y \right)      &  y>a, \\
+U_0 \left( - \frac{y^2}{2a} + b - \frac{a}{2} \right)    & -a < y < a, \\
+U_0 \left( b + y \right)  & y<-a.
+\end{cases}
+\end{equation}
+
+According to linear stability analysis, the fastest growing wavenumber $k$ for this system occurs when $ka=0.398$. This corresponds to a wavelength of $\lambda = \frac{2 \pi}{k} = 2 \pi a \cdot 2.51$. The domain width should therefore be several factors larger than this wavelength.
+
+Reasonable setting would therefore be a domain height of $2b$, width of $8b$, $a=0.1b$ and $U_0=1$ m/s. Try $b=10$ meters.
+
+\section{Transforms}
+
+\begin{align}
+\psi \mapsto& \left( e^{i k x}, \sin (l y) \right) \\
+\zeta \mapsto& \left( e^{i k x}, \sin (l y) \right) \\
+u \mapsto& \left( e^{i k x}, \cos (l y) \right) \\
+v \mapsto& \left( e^{i k x}, \sin (l y) \right) \\
+\end{align}
+
+u needs to be in a cosine basis in the y, psi needs a sine basis. 
+
+\end{document}  
